@@ -27,13 +27,16 @@
 
 // The "entry point" where we'll inject our Github profile cards
 const cards = document.querySelector(".cards");
-axios
-  .get("https://api.github.com/users/emilioramirezeguia")
-  .then((response) => {
-    const emilio = response.data;
-    const emiliosProfile = githubCard(emilio);
-    cards.appendChild(emiliosProfile);
-  });
+// axios
+//   .get("https://api.github.com/users/emilioramirezeguia")
+//   .then((response) => {
+//     const emilio = response.data;
+//     const emiliosProfile = githubCard(emilio);
+//     cards.appendChild(emiliosProfile);
+//   })
+//   .catch((error) => {
+//     console.log("Error: ", error);
+//   });
 
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
@@ -46,8 +49,29 @@ axios
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  "rabithole",
+  "cameronlares",
+  "khwanchaiwill",
+  "emilioramirezeguia",
+  "tonomb",
+];
 
+followersArray.forEach((follower) => {
+  axios
+    .get(`https://api.github.com/users/${follower}`)
+    .then((response) => {
+      const userData = response.data;
+      const userProfiles = githubCard(userData);
+      cards.appendChild(userProfiles);
+    })
+    .catch((error) => {
+      console.log("Error: ", error);
+    })
+    .finally(() => {
+      console.log("Everything looks good 👍🏻");
+    });
+});
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
