@@ -3,6 +3,14 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+// axios
+//   .get("https://api.github.com/users/emilioramirezeguia")
+//   .then((response) => {
+//     console.log(response.data);
+//   })
+//   .catch((error) => {
+//     console.log("Error: ", error);
+//   });
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -16,6 +24,16 @@
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
+
+// The "entry point" where we'll inject our Github profile cards
+const cards = document.querySelector(".cards");
+axios
+  .get("https://api.github.com/users/emilioramirezeguia")
+  .then((response) => {
+    const emilio = response.data;
+    const emiliosProfile = githubCard(emilio);
+    cards.appendChild(emiliosProfile);
+  });
 
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
@@ -49,6 +67,56 @@ const followersArray = [];
       </div>
     </div>
 */
+function githubCard(user) {
+  // Create HTML elements
+  const card = document.createElement("div");
+  const image = document.createElement("img");
+  const info = document.createElement("div");
+  const name = document.createElement("h3");
+  const username = document.createElement("p");
+  const location = document.createElement("p");
+  const urlText = document.createElement("p");
+  const urlLink = document.createElement("a");
+  const followers = document.createElement("p");
+  const following = document.createElement("p");
+  const bio = document.createElement("p");
+
+  // Add corresponding classes where needed
+  card.classList.add("card");
+  info.classList.add("card-info");
+  name.classList.add("name");
+  username.classList.add("username");
+
+  // Nest HTML elements like the example above
+  card.appendChild(image);
+  card.appendChild(info);
+  info.appendChild(name);
+  info.appendChild(username);
+  info.appendChild(location);
+  info.appendChild(urlText);
+  urlText.appendChild(urlLink);
+  info.appendChild(followers);
+  info.appendChild(following);
+  info.appendChild(bio);
+
+  // Map the parameter's data to the appropriate HTML elements
+  image.src = user["avatar_url"];
+  name.textContent = user["name"];
+  username.textContent = user["login"];
+  location.textContent = `Location: ${user["location"]}`;
+  urlText.textContent = "Profile: ";
+  urlLink.href = user["html_url"];
+  urlLink.textContent = user["html_url"];
+  followers.textContent = `Followers: ${user["followers"]}`;
+  following.textContent = `Following: ${user["following"]}`;
+  if (user["bio"] !== null) {
+    bio.textContent = user["bio"];
+  } else {
+    bio.textContent = "Gabriel's favorite student ever! 😄";
+  }
+
+  return card;
+}
 
 /*
   List of LS Instructors Github username's:
