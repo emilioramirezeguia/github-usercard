@@ -118,7 +118,7 @@ function githubCard(user) {
   info.appendChild(username);
   info.appendChild(location);
   info.appendChild(urlText);
-  urlText.appendChild(urlLink);
+  // urlText.appendChild(urlLink);
   info.appendChild(followers);
   info.appendChild(following);
   info.appendChild(bio);
@@ -128,7 +128,8 @@ function githubCard(user) {
   name.textContent = user["name"];
   username.textContent = user["login"];
   location.textContent = `Location: ${user["location"]}`;
-  // urlText.textContent = "Profile: ";
+  urlText.textContent = "Profile: ";
+  urlText.appendChild(urlLink);
   urlLink.href = user["html_url"];
   urlLink.textContent = user["html_url"];
   followers.textContent = `Followers: ${user["followers"]}`;
