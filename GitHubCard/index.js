@@ -49,29 +49,29 @@ const cards = document.querySelector(".cards");
     user, and adding that card to the DOM.
 */
 
-const followersArray = [
-  "rabithole",
-  "cameronlares",
-  "khwanchaiwill",
-  "emilioramirezeguia",
-  "tonomb",
-];
-
-followersArray.forEach((follower) => {
-  axios
-    .get(`https://api.github.com/users/${follower}`)
-    .then((response) => {
-      const userData = response.data;
-      const userProfiles = githubCard(userData);
-      cards.appendChild(userProfiles);
-    })
-    .catch((error) => {
-      console.log("Error: ", error);
-    })
-    .finally(() => {
-      console.log("Everything looks good 👍🏻");
-    });
-});
+// const followersArray = [
+//   "rabithole",
+//   "cameronlares",
+//   "khwanchaiwill",
+//   "emilioramirezeguia",
+//   "tonomb",
+// ];
+//
+// followersArray.forEach((follower) => {
+//   axios
+//     .get(`https://api.github.com/users/${follower}`)
+//     .then((response) => {
+//       const userData = response.data;
+//       const userProfiles = githubCard(userData);
+//       cards.appendChild(userProfiles);
+//     })
+//     .catch((error) => {
+//       console.log("Error: ", error);
+//     })
+//     .finally(() => {
+//       console.log("Everything looks good 👍🏻");
+//     });
+// });
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
@@ -128,7 +128,7 @@ function githubCard(user) {
   name.textContent = user["name"];
   username.textContent = user["login"];
   location.textContent = `Location: ${user["location"]}`;
-  urlText.textContent = "Profile: ";
+  // urlText.textContent = "Profile: ";
   urlLink.href = user["html_url"];
   urlLink.textContent = user["html_url"];
   followers.textContent = `Followers: ${user["followers"]}`;
@@ -150,3 +150,31 @@ function githubCard(user) {
     luishrd
     bigknell
 */
+
+// STRETCH
+function youAndFriends(yourGithubhandle) {
+  axios
+    .get(`https://api.github.com/users/${yourGithubhandle}`)
+    .then((yourResponse) => {
+      const yourInfo = yourResponse.data;
+      const yourCard = githubCard(yourInfo);
+      cards.appendChild(yourCard);
+    })
+    .catch((error) => {
+      console.log("Error in your data: ", error);
+    });
+  axios
+    .get(`https://api.github.com/users/${yourGithubhandle}/followers`)
+    .then((friendsResponse) => {
+      const friendsInfo = friendsResponse.data;
+      friendsInfo.forEach((friend) => {
+        const friendCard = githubCard(friend);
+        cards.appendChild(friendCard);
+      });
+    })
+    .catch((error) => {
+      console.log("Error in your data: ", error);
+    });
+}
+
+youAndFriends("emilioramirezeguia");
